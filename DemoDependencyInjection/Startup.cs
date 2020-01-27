@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DemoDependencyInjection.CustomServices;
+using DemoDependencyInjection.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,6 +25,11 @@ namespace DemoDependencyInjection
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // ########## Registered Service as Transient ##########
+            services.AddTransient<RandomStringService>();
+            //services.AddScoped<RandomStringService>();
+            //services.AddSingleton<RandomStringService>();
+
             services.AddControllersWithViews();
         }
 
@@ -39,6 +46,10 @@ namespace DemoDependencyInjection
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            // ########## Calling RandomStringMiddleware  ##########
+            app.UseRandomStringMiddleware();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
