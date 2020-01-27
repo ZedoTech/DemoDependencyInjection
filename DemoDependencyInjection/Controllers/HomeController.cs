@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using DemoDependencyInjection.Models;
 using DemoDependencyInjection.CustomServices;
 using Microsoft.AspNetCore.Http;
+using DemoDependencyInjection.Providers;
 
 namespace DemoDependencyInjection.Controllers
 {
@@ -15,16 +16,19 @@ namespace DemoDependencyInjection.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly RandomStringService _randomStringService;
+        private readonly IDataProvider _dataProvider;
 
-        public HomeController(ILogger<HomeController> logger, RandomStringService randomStringSService)
+        public HomeController(ILogger<HomeController> logger, RandomStringService randomStringSService, IDataProvider dataProvider)
         {
             _logger = logger;
             _randomStringService = randomStringSService;
+            _dataProvider = dataProvider;
         }
 
         public IActionResult Index()
         {
             HttpContext.Response.WriteAsync($"Random Value from HomeController/Index :- {_randomStringService.ShowRandomString()}  \n");
+            _dataProvider.WriteLog();
             return View();
         }
 
